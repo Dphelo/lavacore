@@ -6,17 +6,17 @@
   --text-2: rgba(235, 235, 245, .70);
   --text-3: rgba(235, 235, 245, .45);
 
-  --glass-tint: rgba(14, 14, 20, .52);
-  --glass-tint-strong: rgba(10, 10, 16, .64);
-  --glass-stroke: rgba(255, 255, 255, .15);
+  --glass-tint: rgba(17, 10, 8, .56);
+  --glass-tint-strong: rgba(12, 7, 6, .70);
+  --glass-stroke: rgba(255, 166, 92, .18);
   --fill-1: rgba(255, 255, 255, .08);
   --fill-2: rgba(255, 255, 255, .14);
   --fill-3: rgba(255, 255, 255, .22);
-  --card: rgba(255, 255, 255, .06);
-  --card-stroke: rgba(255, 255, 255, .08);
+  --card: rgba(255, 122, 38, .055);
+  --card-stroke: rgba(255, 166, 92, .10);
 
-  --accent-rgb: 140, 200, 255;
-  --orange: #ff9f0a;
+  --accent-rgb: 255, 113, 37;
+  --orange: #ff7125;
   --green: #30d158;
   --red: #ff453a;
   --yellow: #ffd60a;
@@ -1009,7 +1009,7 @@ body.no-anim .eq i { transform: scaleY(.55); }
 }
 
 
-/* news from the Nova team: the toast, and its card in the System tab until it is closed */
+/* LavaCore news: toast and System-tab card until dismissed */
 .l-toast.news .ico-bell, .l-vtoast.news .ico-bell { display: block; color: rgb(var(--accent-rgb)); }
 .l-toast.news.plugin .ico-bell, .l-toast.news.update .ico-bell, .l-vtoast.news.plugin .ico-bell, .l-vtoast.news.update .ico-bell { display: none; }
 .l-toast.news.plugin .ico-dl, .l-toast.news.update .ico-dl, .l-vtoast.news.plugin .ico-dl, .l-vtoast.news.update .ico-dl { display: block; color: rgb(var(--accent-rgb)); }
