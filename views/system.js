@@ -23,6 +23,23 @@
     return 'rain';
   }
 
+  function renderWeek(days) {
+    const week = $('#wx-week');
+    if (!week) return;
+    week.innerHTML = '';
+    (Array.isArray(days) ? days : []).slice(0, 7).forEach((d, i) => {
+      const info = WX[wxKind(d.code, true)] || WX.cloud;
+      const date = new Date(`${d.date}T12:00:00`);
+      const day = i === 0 ? 'Today' : date.toLocaleDateString(undefined, { weekday: 'short' });
+      const card = document.createElement('div');
+      card.className = 'wx-day';
+      card.title = `${info.label} · rain ${d.rain ?? 0}%`;
+      card.innerHTML = `<span>${esc(day)}</span><svg class="s" viewBox="0 0 24 24">${info.svg}</svg><b>${Math.round(d.hi)}°</b><small>${Math.round(d.lo)}°</small>`;
+      week.append(card);
+    });
+    week.hidden = !week.children.length;
+  }
+
   function renderWeather(w) {
     if (!w) return;
     const kind = wxKind(w.code, w.isDay);
@@ -34,6 +51,15 @@
     $('#wx-temp').textContent = `${w.temp}°`;
     $('#wx-desc').textContent = info.label;
     $('#wx-meta').textContent = `${w.city ? `${w.city} · ` : ''}H ${w.hi}° L ${w.lo}°`;
+    const details = $('#wx-details');
+    if (details) {
+      details.hidden = false;
+      $('#wx-feels').textContent = `${w.feels ?? w.temp}°`;
+      $('#wx-humidity').textContent = `${w.humidity ?? 0}%`;
+      $('#wx-wind').textContent = `${w.wind ?? 0} km/h`;
+      $('#wx-rain').textContent = `${w.rain ?? 0}%`;
+    }
+    renderWeek(w.forecast);
     const mini = $('#wx-mini');
     mini.hidden = false;
     mini.querySelector('svg').innerHTML = info.svg;
