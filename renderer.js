@@ -990,7 +990,7 @@ function startPhase(phase) {
   state.timer.running = true;
   drawTimer();
   render();
-  // Nova puts her headband on and opens her laptop
+  // Companion focus scene
   if (phase === 'focus' && feat('novaFocus')) {
     $('.sc-laptop-time').textContent = `${min}:00`;
     window.playScene?.({
