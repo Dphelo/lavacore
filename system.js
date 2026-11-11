@@ -203,15 +203,31 @@ async function fetchWeather() {
     const { lat, lon, city } = await getLocation();
     const url =
       `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
-      '&current=temperature_2m,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=1';
+      '&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,is_day,wind_speed_10m' +
+      '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max' +
+      '&timezone=auto&forecast_days=7';
     const w = await getJson(url);
+    const daily = w.daily || {};
+    const forecast = (daily.time || []).slice(0, 7).map((date, i) => ({
+      date,
+      code: daily.weather_code?.[i] ?? 0,
+      hi: Math.round(daily.temperature_2m_max?.[i] ?? 0),
+      lo: Math.round(daily.temperature_2m_min?.[i] ?? 0),
+      rain: Math.round(daily.precipitation_probability_max?.[i] ?? 0),
+    }));
     weather = {
       city: city || '',
       temp: Math.round(w.current.temperature_2m),
+      feels: Math.round(w.current.apparent_temperature ?? w.current.temperature_2m),
+      humidity: Math.round(w.current.relative_humidity_2m ?? 0),
+      wind: Math.round(w.current.wind_speed_10m ?? 0),
+      precipitation: Number(w.current.precipitation ?? 0),
       code: w.current.weather_code,
       isDay: !!w.current.is_day,
-      hi: Math.round(w.daily.temperature_2m_max[0]),
-      lo: Math.round(w.daily.temperature_2m_min[0]),
+      hi: forecast[0]?.hi ?? Math.round(daily.temperature_2m_max?.[0] ?? 0),
+      lo: forecast[0]?.lo ?? Math.round(daily.temperature_2m_min?.[0] ?? 0),
+      rain: forecast[0]?.rain ?? 0,
+      forecast,
     };
     settings.save('weather-cache.json', { at: Date.now(), weather });
     send('weather', weather);
