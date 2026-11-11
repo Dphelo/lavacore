@@ -1,24 +1,23 @@
 {
-  "name": "nova-island",
-  "version": "1.7.0",
-  "description": "A living island for your Windows desktop",
+  "name": "lavacore",
+  "version": "0.1.0",
+  "description": "A modern Windows productivity, system monitoring, weather, faith and performance companion.",
   "main": "nova.js",
   "scripts": {
     "start": "electron .",
     "dist": "electron-builder --win nsis",
-    "dist:portable": "electron-builder --win portable",
-    "dist:store": "set \"ELECTRON_BUILDER_WINDOWS_KITS_PATH=C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.22621.0\\x64\" && electron-builder --win appx"
+    "dist:portable": "electron-builder --win portable"
   },
-  "author": "AmerTech",
+  "author": "LavaCore contributors; based on Nova Island by AmerTech",
   "license": "GPL-3.0-only",
   "devDependencies": {
     "electron": "^44.7.2",
     "electron-builder": "^26.17.0"
   },
   "build": {
-    "appId": "com.dynamicnova.app",
-    "productName": "Nova Island",
-    "copyright": "Copyright © 2026 Nova Island by AmerTech",
+    "appId": "com.dphelo.lavacore",
+    "productName": "LavaCore",
+    "copyright": "Copyright © 2026 LavaCore contributors. Based on Nova Island by AmerTech.",
     "electronLanguages": [
       "en-US",
       "ar"
@@ -42,18 +41,13 @@
       "!NEXT-RELEASE.md",
       "!contrib/**",
       "!keys/**",
-      "!nova-island-plugins/**",
+      "!lavacore-plugins/**",
       "!tools/**",
       "!scripts/**",
       "!news.json",
       "!build/appx/**",
       "!store/**"
     ],
-    "publish": {
-      "provider": "github",
-      "owner": "NOVA-TECH-KIT",
-      "repo": "nova-island"
-    },
     "asarUnpack": [
       "helper/nova-helper.exe"
     ],
@@ -62,40 +56,24 @@
         "nsis"
       ],
       "icon": "build/icon.ico",
-      "executableName": "Nova Island"
+      "executableName": "LavaCore"
     },
     "nsis": {
       "oneClick": false,
-      "artifactName": "Nova-Island-Setup-${version}.${ext}",
+      "artifactName": "LavaCore-Setup-${version}.${ext}",
       "license": "LICENSE",
       "perMachine": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": "always",
       "createStartMenuShortcut": true,
-      "shortcutName": "Nova Island",
+      "shortcutName": "LavaCore",
       "installerIcon": "build/icon.ico",
       "uninstallerIcon": "build/icon.ico",
       "runAfterFinish": true,
       "deleteAppDataOnUninstall": false
     },
     "portable": {
-      "artifactName": "Nova Island ${version} portable.exe"
-    },
-    "appx": {
-      "identityName": "AmerTech.NovaIsland",
-      "publisher": "CN=8BA7D487-B6B1-48CC-A9BE-EAC4A654C421",
-      "publisherDisplayName": "AmerTech",
-      "applicationId": "NovaIsland",
-      "displayName": "Nova Island",
-      "backgroundColor": "transparent",
-      "languages": [
-        "en-US",
-        "ar"
-      ],
-      "addAutoLaunchExtension": true,
-      "artifactName": "Nova-Island-${version}-Store.${ext}",
-      "minVersion": "10.0.17763.0",
-      "maxVersionTested": "10.0.26100.0"
+      "artifactName": "LavaCore-${version}-portable.${ext}"
     }
   },
   "dependencies": {
