@@ -5,10 +5,10 @@ const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
 
-// One data folder for the installed app ("Dynamic Nova") and dev runs ("dynamic-nova"), so
-// settings, apps and caches carry over, and the single-instance lock covers both. Must run
-// before any module below reads app.getPath('userData').
-app.setPath('userData', path.join(app.getPath('appData'), 'dynamic-nova'));
+// LavaCore uses its own data folder so it can coexist safely with the original project.
+// Must run before any module below reads app.getPath('userData').
+app.setName('LavaCore');
+app.setPath('userData', path.join(app.getPath('appData'), 'LavaCore'));
 const log = require('./log');
 log.init();
 
@@ -24,7 +24,8 @@ const privacy = require('./privacy');
 const calendar = require('./calendar');
 const network = require('./network');
 const prefsWindow = require('./prefs-window');
-const updater = require('./updater');
+// Upstream auto-update is intentionally disabled until LavaCore has its own signed release feed.
+const updater = { start() {}, setEnabled() {}, install() {}, retrySoon() {} };
 const news = require('./news');
 const plugins = require('./plugins');
 
@@ -449,7 +450,7 @@ async function onClipboardSeq(seq, isPrivate) {
 }
 
 // The Snipping Tool saves every capture to Pictures\Screenshots by itself: that file goes on the
-// shelf (no second copy). Any other copied image is saved to Pictures\Nova Island first.
+// shelf (no second copy). Any other copied image is saved to Pictures\LavaCore first.
 const SNIP_WAIT_MS = 2500;
 async function windowsScreenshot(since) {
   const dir = path.join(app.getPath('pictures'), 'Screenshots');
@@ -474,7 +475,7 @@ async function shotToShelf(until = 0) {
   try {
     let file = until ? await windowsScreenshot(copiedAt) : null;
     if (!file) {
-      const dir = path.join(app.getPath('pictures'), 'Nova Island');
+      const dir = path.join(app.getPath('pictures'), 'LavaCore');
       const pad = (n) => String(n).padStart(2, '0');
       const d = new Date();
       file = path.join(dir, `Screenshot ${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}.png`);
@@ -860,7 +861,7 @@ ipcMain.on('dl-control', (_e, id, action) => downloads.control(typeof id === 'st
 // Start with Windows = a shortcut in the user's Startup folder (works for both the dev
 // launch "electron.exe <folder>" and a packaged build).
 function startupLink() {
-  return path.join(app.getPath('appData'), 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'Startup', 'Nova Island.lnk');
+  return path.join(app.getPath('appData'), 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'Startup', 'LavaCore.lnk');
 }
 
 function shortcutOptions() {
@@ -870,12 +871,12 @@ function shortcutOptions() {
     cwd: __dirname,
     icon: path.join(__dirname, 'build', 'icon.ico'),
     iconIndex: 0,
-    description: 'Nova Island',
+    description: 'LavaCore',
   };
 }
 
 // The Microsoft Store version starts with Windows through its package (a startup task, on by
-// default), which the user turns off in Windows Settings > Apps > Startup; Nova can't change it.
+// default), which the user turns off in Windows Settings > Apps > Startup; LavaCore cannot change it.
 const STORE = !!process.windowsStore;
 
 // Installed builds use the system login item; a dev run ("electron.exe <folder>") keeps the
@@ -899,11 +900,11 @@ function setStartWithWindows(on) {
   return shell.writeShortcutLink(link, 'create', shortcutOptions());
 }
 
-// "Setup Nova Island.cmd" launches the app with --setup: create the desktop icon and the
+// The setup launcher uses --setup to create the desktop icon and the
 // startup entry, and write what happened to setup-log.txt next to the app.
 function runSetup() {
-  const lines = [`Nova Island setup - ${new Date().toLocaleString()}`];
-  const desktop = path.join(app.getPath('desktop'), 'Nova Island.lnk');
+  const lines = [`LavaCore setup - ${new Date().toLocaleString()}`];
+  const desktop = path.join(app.getPath('desktop'), 'LavaCore.lnk');
   try {
     const ok = shell.writeShortcutLink(desktop, 'create', shortcutOptions());
     lines.push(`${ok && fs.existsSync(desktop) ? 'OK  ' : 'FAIL'} desktop shortcut: ${desktop}`);
@@ -931,7 +932,7 @@ app.on('second-instance', (_e, argv) => {
 // --- menus ---
 function appMenu() {
   return Menu.buildFromTemplate([
-    { label: 'Nova Island', enabled: false },
+    { label: 'LavaCore', enabled: false },
     { type: 'separator' },
     {
       label: 'Show island',
@@ -1000,9 +1001,9 @@ ipcMain.handle('general-get', () => generalState());
 const SUPPORT_LINKS = {
   kofi: 'https://ko-fi.com/binamer',
   instapay: 'https://ipn.eg/S/binamerbm/instapay/38txJO',
-  github: 'https://github.com/NOVA-TECH-KIT/nova-island',
+  github: 'https://github.com/Dphelo/lavacore',
   facebook: 'https://www.facebook.com/nova4kit/',
-  // Settings > More by Nova
+  // Settings > Original companion tools
   qrnova: 'https://github.com/NOVA-TECH-KIT/qr-nova/releases/latest',
   'qrnova-src': 'https://github.com/NOVA-TECH-KIT/qr-nova',
   // Settings > General, Store version: Windows' own startup apps page
@@ -1069,7 +1070,7 @@ ipcMain.handle('plugins-list', () => {
 ipcMain.handle('plugin-install', (_e, id) => plugins.install(String(id)));
 ipcMain.handle('plugin-install-file', async (e) => {
   const w = BrowserWindow.fromWebContents(e.sender);
-  const r = await dialog.showOpenDialog(w, { title: 'Install a plugin', properties: ['openFile'], filters: [{ name: 'Nova Island plugin', extensions: ['nvp'] }] });
+  const r = await dialog.showOpenDialog(w, { title: 'Install a plugin', properties: ['openFile'], filters: [{ name: 'LavaCore plugin', extensions: ['nvp'] }] });
   return r.canceled || !r.filePaths[0] ? null : plugins.installFile(r.filePaths[0]);
 });
 ipcMain.on('plugin-remove', (_e, id) => plugins.remove(String(id)));
@@ -1160,7 +1161,7 @@ function trayIcon() {
 
 function buildTray() {
   tray = new Tray(trayIcon());
-  tray.setToolTip('Nova Island');
+  tray.setToolTip('LavaCore');
   tray.on('click', () => tray.popUpContextMenu(appMenu()));
   tray.on('right-click', () => tray.popUpContextMenu(appMenu()));
 }
