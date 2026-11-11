@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; media-src https://*.radiojar.com http://*.radiojar.com https://qurango.net https://*.qurango.net">
-  <title>Nova Island</title>
+  <title>LavaCore</title>
   <link rel="stylesheet" href="themes.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="island" class="idle" role="region" aria-label="Dynamic Island">
+  <div id="island" class="idle" role="region" aria-label="LavaCore Island">
     <div class="clip">
       <!-- glass: blurred live backdrop + tint + album glow + sheen -->
       <canvas id="bd" aria-hidden="true"></canvas>
@@ -71,7 +71,7 @@
         <div class="sc-face"><i class="eye"><b></b></i><i class="eye"><b></b></i><i class="cheek"></i><i class="cheek"></i><i class="smile"></i></div>
       </div>
 
-      <!-- Nova: eyes in the idle pill that follow the cursor, blink and show a mood -->
+      <!-- LavaCore companion eyes in the idle pill -->
       <div class="layer l-eyes" aria-hidden="true">
         <div class="eyes"><i class="eye"><b></b></i><i class="eye"><b></b></i></div>
       </div>
@@ -217,7 +217,7 @@
             </button>
           </nav>
           <div class="clock">
-            <button class="gear bell" id="open-news" title="News from Nova" aria-label="News from Nova"><svg class="s" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><i class="bell-dot"></i></button>
+            <button class="gear bell" id="open-news" title="LavaCore news" aria-label="LavaCore news"><svg class="s" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><i class="bell-dot"></i></button>
             <button class="gear" id="open-settings" title="Settings" aria-label="Settings"><svg class="s" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg></button>
             <span class="wx-mini" id="wx-mini" hidden><svg class="s" viewBox="0 0 24 24"></svg><b></b></span>
             <span class="clock-time"><b id="x-clock"></b><span id="x-date"></span></span>
@@ -450,9 +450,9 @@
 
         <!-- SYSTEM -->
         <!-- NEWS: opened by the bell in the header (no tab of its own) -->
-        <section id="v-news" class="view" role="tabpanel" aria-label="News from Nova">
+        <section id="v-news" class="view" role="tabpanel" aria-label="LavaCore news">
           <div class="news-view">
-            <div class="news-head"><b>News from Nova</b></div>
+            <div class="news-head"><b>LavaCore News</b></div>
             <div class="news-list"></div>
           </div>
         </section>
